@@ -52,4 +52,3 @@ def test_parameters():
     with open('./data/test_data.json', 'r') as file:
         json_data = json.loads(file.read())
     yield json_data
-    
