@@ -13,7 +13,7 @@ def test_admin_page_elements(browser, page, element, test_parameters, url):
     current_page = test_parameters[keys[page]]
     browser.get(url + keys[page])
     try:
-        req_element = WebDriverWait(browser, DELAY).until(
+        WebDriverWait(browser, DELAY).until(
             expected_conditions.presence_of_element_located((By.CSS_SELECTOR, current_page[element]))
         )
     except Exception as Err:
