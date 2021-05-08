@@ -18,7 +18,6 @@ def test_admin_page_elements(browser, page, element, test_parameters, url):
             expected_conditions.presence_of_element_located((By.CSS_SELECTOR, current_page[element]))
         )
     except TimeoutException as Err:
-        req_element = False
+        raise AssertionError("На странице {} не найден элемент {}".format(keys[page], current_page[element]))
     else:
-        req_element = True
-    assert req_element is True
+        assert True
