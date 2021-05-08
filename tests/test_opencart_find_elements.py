@@ -16,7 +16,7 @@ def test_admin_page_elements(browser, page, element, test_parameters, url):
         WebDriverWait(browser, DELAY).until(
             expected_conditions.presence_of_element_located((By.CSS_SELECTOR, current_page[element]))
         )
-    except Exception as Err:
+    except TimeoutException as Err:
         req_element = False
     else:
         req_element = True
