@@ -1,6 +1,5 @@
 {
-  "basepage": {
-    "link": "/",
+  "mainpage": {
     "data": ["#slideshow0",
     "#carousel0",
     "#menu",
@@ -9,8 +8,7 @@
     "#search"
     ]
   },
-  "category": {
-    "link": "/index.php?route=product/category&path=20",
+  "categorypage": {
     "data": ["#top",
     "#menu",
     ".breadcrumb",
@@ -19,19 +17,17 @@
     ".product-thumb"
     ]
   },
-  "product": {
-    "link": "/index.php?route=product/product&path=57&product_id=49",
+  "productpage": {
     "data": [
       ".thumbnails",
       ".image-additional",
-      "button.btn-primary",
+      "#button-cart",
       "div.tab-content",
       "span.fa.fa-stack",
       "a.addthis_button_facebook_like"
     ]
   },
   "userloginpage": {
-    "link": "/index.php?route=account/login",
     "data": ["a.btn.btn-primary",
     "input.btn.btn-primary",
     "label.control-label[for=input-email]",
@@ -41,7 +37,6 @@
     ]
   },
   "adminloginpage": {
-    "link": "/admin",
     "data": [
       "h1.panel-title",
       "#input-username",

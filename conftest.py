@@ -25,12 +25,23 @@ def pytest_addoption(parser):
                      default=5,
                      type=int,
                      help='Время ожидания элемента на странице')
+    parser.addoption('--oc_adm_name',
+                     action='store',
+                     default='demo',
+                     type=str,
+                     help='Логин от админки Opencart')
+    parser.addoption('--oc_adm_pass',
+                     action='store',
+                     default='demo',
+                     type=str,
+                     help='Пароль от админки Opencart')
 
 
 @pytest.fixture
 def browser(request):
     browser = request.config.getoption('--browser')
     timeout = request.config.getoption('--timeout')
+    url = request.config.getoption('--url')
     driver = None
     if browser == 'chrome':
         options = webdriver.ChromeOptions()
@@ -44,14 +55,9 @@ def browser(request):
         driver = webdriver.Opera(executable_path=DRIVERS + 'operadriver.exe')
     driver.timeout = timeout
     request.addfinalizer(driver.quit)
+    driver.get(url)
 
     return driver
-
-
-@pytest.fixture()
-def url(request):
-    url = request.config.getoption('--url')
-    return url
 
 
 @pytest.fixture(scope='module')
@@ -59,3 +65,24 @@ def test_parameters():
     with open(os.path.abspath('data/test_data.json'), 'r') as file:
         json_data = json.loads(file.read())
     yield json_data
+
+
+@pytest.fixture(scope='module')
+def url(request):
+    return request.config.getoption('--url')
+
+
+@pytest.fixture(scope='module')
+def credentials(request):
+    login = request.config.getoption('--oc_adm_name')
+    password = request.config.getoption('--oc_adm_pass')
+    return login, password
+
+
+@pytest.fixture(scope='module')
+def product_description():
+    product_name = 'TestProduct'
+    product_desc = 'TestDescription'
+    product_meta = 'TestMeta'
+    product_model = 'TestModel'
+    return product_name, product_desc, product_meta, product_model
