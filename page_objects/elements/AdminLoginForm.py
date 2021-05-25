@@ -9,8 +9,6 @@ class AdminLoginForm(BasePage):
     LOGIN_BUTTON = (By.CSS_SELECTOR, "button.btn-primary")
 
     def login_with(self, username, password):
-        self._element(self.INPUT_EMAIL).clear()
-        self._element(self.INPUT_EMAIL).send_keys(username)
-        self._element(self.INPUT_PASSWORD).clear()
-        self._element(self.INPUT_PASSWORD).send_keys(password)
+        self._clear_and_send_keys(self.INPUT_EMAIL, username)
+        self._clear_and_send_keys(self.INPUT_PASSWORD, password)
         self._element(self.LOGIN_BUTTON).click()

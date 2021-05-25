@@ -36,6 +36,10 @@ class BasePage:
         element = self._element(locator)
         ActionChains(self.browser).pause(0.3).move_to_element(element).click().perform()
 
+    def _clear_and_send_keys(self, locator, value):
+        self._element(locator).clear()
+        self._element(locator).send_keys(value)
+
     # def _click_in_element(self, element, locator: tuple, index: int = 0):
     #     element = element.find_elements(*locator)[index]
     #     self._click_element(element)

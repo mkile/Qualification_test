@@ -73,7 +73,7 @@ def url(request):
 
 
 @pytest.fixture(scope='module')
-def credentials(request):
+def admin_credentials(request):
     login = request.config.getoption('--oc_adm_name')
     password = request.config.getoption('--oc_adm_pass')
     return login, password
@@ -86,3 +86,13 @@ def product_description():
     product_meta = 'TestMeta'
     product_model = 'TestModel'
     return product_name, product_desc, product_meta, product_model
+
+
+@pytest.fixture(scope='module')
+def new_user_credentials():
+    firstname = 'TestFirstName'
+    lastname = 'TestLastName'
+    email = 'test@test.ru'
+    phone = '79415614565'
+    password = '1234Strong_Pass'
+    return firstname, lastname, email, phone, password
