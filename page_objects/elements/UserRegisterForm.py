@@ -10,9 +10,7 @@ class UserRegisterForm(BasePage):
     INPUT_PHONE = (By.CSS_SELECTOR, "#input-telephone")
     INPUT_PASSWORD_1 = (By.CSS_SELECTOR, "#input-password")
     INPUT_PASSWORD_2 = (By.CSS_SELECTOR, "#input-confirm")
-
     POLICY_AGREE = (By.CSS_SELECTOR, 'input[name="agree"]')
-
     LOGIN_BUTTON = (By.CSS_SELECTOR, "input.btn.btn-primary")
 
     def login_with(self, firstname, lastname, email, phone, password):
