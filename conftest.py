@@ -10,11 +10,11 @@ def pytest_addoption(parser):
     parser.addoption('--browser',
                      action='store',
                      choices=['chrome', 'firefox', 'opera'],
-                     default='chrome',
+                     default='firefox',
                      help='Укажите драйвер')
     parser.addoption('--url',
                      action='store',
-                     default='https://demo.opencart.com',
+                     default='http://demo.opencart.com',
                      help='Укажите ссылку на сайт Opencart')
     parser.addoption('--headless',
                      action='store_true',
@@ -35,24 +35,47 @@ def pytest_addoption(parser):
                      default='demo',
                      type=str,
                      help='Пароль от админки Opencart')
+    parser.addoption("--selenoid", action="store_true", default=True)
+    parser.addoption("--executor", action="store", default="localhost")
+    parser.addoption("--vnc", action="store_true", default=False)
+    parser.addoption("--videos", action="store_true", default=False)
 
 
 @pytest.fixture
 def browser(request):
     browser = request.config.getoption('--browser')
     timeout = request.config.getoption('--timeout')
+    selenoid = request.config.getoption('--selenoid')
+    executor = request.config.getoption('--executor')
+    vnc = request.config.getoption('--vnc')
+    videos = request.config.getoption('--videos')
     url = request.config.getoption('--url')
     driver = None
-    if browser == 'chrome':
-        options = webdriver.ChromeOptions()
-        options.headless = request.config.getoption('--headless')
-        driver = webdriver.Chrome(executable_path=DRIVERS + 'chromedriver.exe', options=options)
-    elif browser == 'firefox':
-        options = webdriver.FirefoxOptions()
-        options.headless = request.config.getoption('--headless')
-        driver = webdriver.Firefox(executable_path=DRIVERS + 'geckodriver.exe', options=options)
-    elif browser == 'opera':
-        driver = webdriver.Opera(executable_path=DRIVERS + 'operadriver.exe')
+    if selenoid:
+        executor_url = f"http://{executor}:4444/wd/hub"
+        caps = {
+            "browserName": browser,
+            "name": "mkile",
+            "selenoid:options": {
+                "enableVNC": vnc,
+                "enableVideo": videos
+            }
+        }
+        driver = webdriver.Remote(
+            command_executor=executor_url,
+            desired_capabilities=caps
+        )
+    else:
+        if browser == 'chrome':
+            options = webdriver.ChromeOptions()
+            options.headless = request.config.getoption('--headless')
+            driver = webdriver.Chrome(executable_path=DRIVERS + 'chromedriver.exe', options=options)
+        elif browser == 'firefox':
+            options = webdriver.FirefoxOptions()
+            options.headless = request.config.getoption('--headless')
+            driver = webdriver.Firefox(executable_path=DRIVERS + 'geckodriver.exe', options=options)
+        elif browser == 'opera':
+            driver = webdriver.Opera(executable_path=DRIVERS + 'operadriver.exe')
     driver.timeout = timeout
     request.addfinalizer(driver.quit)
     driver.get(url)
