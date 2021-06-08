@@ -1,9 +1,13 @@
+import logging
+
 import pytest
 from selenium import webdriver
 import json
 import os
 
 DRIVERS = './drivers/'
+
+logging.basicConfig(level=logging.INFO, filename="logs/test.log")
 
 
 def pytest_addoption(parser):
@@ -35,7 +39,7 @@ def pytest_addoption(parser):
                      default='demo',
                      type=str,
                      help='Пароль от админки Opencart')
-    parser.addoption("--selenoid", action="store_true", default=True)
+    parser.addoption("--selenoid", action="store_false", default=True)
     parser.addoption("--executor", action="store", default="localhost")
     parser.addoption("--vnc", action="store_true", default=False)
     parser.addoption("--videos", action="store_true", default=False)
@@ -43,6 +47,11 @@ def pytest_addoption(parser):
 
 @pytest.fixture
 def browser(request):
+
+    def finalizer():
+        driver.quit()
+        logger.info("===> Test {} finished".format(test_name))
+
     browser = request.config.getoption('--browser')
     timeout = request.config.getoption('--timeout')
     selenoid = request.config.getoption('--selenoid')
@@ -51,6 +60,10 @@ def browser(request):
     videos = request.config.getoption('--videos')
     url = request.config.getoption('--url')
     driver = None
+    logger = logging.getLogger('BrowserLogger')
+    test_name = request.node.name
+    logger.info("===> Test {} started".format(test_name))
+
     if selenoid:
         executor_url = f"http://{executor}:4444/wd/hub"
         caps = {
@@ -65,7 +78,9 @@ def browser(request):
             command_executor=executor_url,
             desired_capabilities=caps
         )
+        logger.info(f"Selenoid session starting with browser {browser}")
     else:
+        logger.info(f"Local session starting with browser {browser}")
         if browser == 'chrome':
             options = webdriver.ChromeOptions()
             options.headless = request.config.getoption('--headless')
@@ -77,7 +92,7 @@ def browser(request):
         elif browser == 'opera':
             driver = webdriver.Opera(executable_path=DRIVERS + 'operadriver.exe')
     driver.timeout = timeout
-    request.addfinalizer(driver.quit)
+    request.addfinalizer(finalizer)
     driver.get(url)
 
     return driver
@@ -119,3 +134,29 @@ def new_user_credentials():
     phone = '79415614565'
     password = '1234Strong_Pass'
     return firstname, lastname, email, phone, password
+
+
+@pytest.fixture(autouse=True, scope="session")
+def get_environment(pytestconfig, request):
+    alluredir = request.config.getoption('--alluredir')
+    props = {
+        'Shell': os.getenv('SHELL'),
+        'Terminal': os.getenv('TERM'),
+        'Stand': 'Production'
+    }
+
+    tests_root = pytestconfig.rootdir
+    with open(f'{tests_root}/{alluredir}/environment.properties', 'w') as f:
+        for k, v in props.items():
+            f.write(f'{k}={v}\n')
+
+
+@pytest.fixture(autouse=True, scope="session")
+def clean_allure_results_dir(request):
+    logger = logging.getLogger('BrowserLogger')
+    alluredir = request.config.getoption('--alluredir')
+    for root, dirs, files in os.walk(alluredir):
+        for filename in files:
+            if filename != 'categories.json':
+                os.remove(os.path.join(alluredir, filename))
+    logger.info(f'Cleaned allure reports folder - {alluredir}')

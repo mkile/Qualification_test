@@ -133,3 +133,4 @@ dmypy.json
 allure
 drivers
 cm.exe
+/allure-report/*
