@@ -1,5 +1,9 @@
 [
   {
+    "name": "Normal tests",
+    "matchedStatuses": ["passed"]
+  },
+  {
     "name": "Ignored tests",
     "matchedStatuses": ["skipped"]
   },

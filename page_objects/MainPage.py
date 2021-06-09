@@ -44,7 +44,7 @@ class MainPage(BasePage):
         self._click_element(element[0])
 
     def open_admin_login(self):
-        self.browser.get(self.browser.current_url + self.ADMIN_PAGE)
+        self._open_link(self.browser.current_url + self.ADMIN_PAGE)
 
     def switch_currency(self, currency):
         element = self._verify_element_presence(self.CURRENCY_DROPDOWN_NAME)

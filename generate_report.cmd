@@ -1,1 +1,1 @@
-./allure/bin/allure serve --clean ./allure-results
+./allure/bin/allure serve

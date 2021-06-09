@@ -24,12 +24,12 @@ class AdminPage(BasePage):
     def check_test_product_present(self, product_name, product_desc, product_meta, product_model):
         ProductFilterForm(self.browser).filter_product_by_test_params(product_name, product_model)
         self._verify_element_presence(self.FILTERED_PRODUCTS_SELECTOR)
-        pass
 
     def delete_test_product(self):
         element = self._verify_element_presence(self.FILTERED_PRODUCT_CHECKBOX_SELECTOR)
         self._click_element(element)
         element = self._verify_element_presence(self.DELETE_PRODUCT_SELECTOR)
         self._click_element(element)
+        self.logger.info(f'Admin page clicking alert')
         alert = self.browser.switch_to.alert
         alert.accept()

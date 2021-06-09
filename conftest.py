@@ -4,10 +4,11 @@ import pytest
 from selenium import webdriver
 import json
 import os
+import allure
 
 DRIVERS = './drivers/'
 
-logging.basicConfig(level=logging.INFO, filename="logs/test.log")
+logging.basicConfig(level=logging.INFO, filename="logs/test.log", format='[%(asctime)s] %(message)s')
 
 
 def pytest_addoption(parser):
@@ -39,22 +40,43 @@ def pytest_addoption(parser):
                      default='demo',
                      type=str,
                      help='Пароль от админки Opencart')
-    parser.addoption("--selenoid", action="store_false", default=True)
+    parser.addoption("--no_selenoid", action="store_true", default=False)
     parser.addoption("--executor", action="store", default="localhost")
     parser.addoption("--vnc", action="store_true", default=False)
     parser.addoption("--videos", action="store_true", default=False)
+
+
+@pytest.hookimpl(hookwrapper=True, tryfirst=True)
+def pytest_runtest_makereport(item):
+    outcome = yield
+    rep = outcome.get_result()
+    setattr(item, "rep_" + rep.when, rep)
+    return rep
 
 
 @pytest.fixture
 def browser(request):
 
     def finalizer():
+        logger.info('Running browser Teardown')
+        if request.node.rep_call.failed:
+            logger.warning('Found failed test, trying to add screenshot')
+            # Make the screen-shot if test failed:
+            try:
+                driver.execute_script("document.body.bgColor = 'white';")
+
+                allure.attach(driver.get_screenshot_as_png(),
+                              name=request.function.__name__,
+                              attachment_type=allure.attachment_type.PNG)
+                logger.warning('Screenshot attached')
+            except Exception as Err:
+                logger.warning('Could not add screenshot')
         driver.quit()
         logger.info("===> Test {} finished".format(test_name))
 
     browser = request.config.getoption('--browser')
     timeout = request.config.getoption('--timeout')
-    selenoid = request.config.getoption('--selenoid')
+    selenoid = not(request.config.getoption('--no_selenoid'))
     executor = request.config.getoption('--executor')
     vnc = request.config.getoption('--vnc')
     videos = request.config.getoption('--videos')
