@@ -15,7 +15,7 @@
             "91.0": {
                 "image": "selenoid/chrome:91.0",
                 "port": "4444",
-                "path": "/wd/hub"
+                "path": "/"
             }
         }
     },
@@ -25,7 +25,7 @@
             "76.0": {
                 "image": "selenoid/opera:76.0",
                 "port": "4444",
-                "path": "/wd/hub"
+                "path": "/"
             }
         }
     }
