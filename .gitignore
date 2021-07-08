@@ -127,3 +127,10 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+#IDE and libs specific data
+.idea
+allure
+drivers
+cm.exe
+/allure-report/*
