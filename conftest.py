@@ -185,5 +185,8 @@ def clean_allure_results_dir(request):
     for root, dirs, files in os.walk(alluredir):
         for filename in files:
             if filename != 'categories.json':
-                os.remove(os.path.join(alluredir, filename))
+                try:
+                    os.remove(os.path.join(alluredir, filename))
+                except Exception as Err:
+                    logger.warning(f'Skipped file:{filename} due to error {Err}')
     logger.info(f'Cleaned allure reports folder - {alluredir}')
