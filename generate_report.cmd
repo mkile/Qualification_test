@@ -1,1 +1,0 @@
-./allure/bin/allure serve
