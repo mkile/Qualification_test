@@ -3,11 +3,12 @@ from page_objects.BasePage import BasePage
 
 
 class MainPage(BasePage):
-    POINTS_DROPDOWN_SELECTOR = (By.CSS_SELECTOR, 'li[class="dropdown points"] > a.dropdown-toggle')
-    POINTS_DROPDOWN_MAP_SELECTOR = (By.CSS_SELECTOR, 'ul > li > a[href="#/map?loadBalancingZones=false"]')
-
-
-
+    #points selectors
+    POINTS_DROPDOWN_SELECTOR = (By.CSS_SELECTOR, 'li.dropdown.points')
+    POINTS_DROPDOWN_MAP_SELECTOR = (By.CSS_SELECTOR, 'ul > li.dropdown.points a#ember346')
+    POINTS_ADVANCED_SEARCH_SELECTOR = (By.CSS_SELECTOR, 'ul > li.dropdown.points a#ember349')
+    POINTS_ADVANCED_DATA_SELECTOR = (By.CSS_SELECTOR, 'ul > li.dropdown.points a.pointer')
+    
 
 
     def wait_element(self, element):
