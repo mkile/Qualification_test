@@ -1,4 +1,3 @@
-import pytest
 from page_objects.MainPage import MainPage
 from page_objects.AdminLoginPage import AdminLoginPage
 from page_objects.AdminPage import AdminPage

@@ -1,0 +1,47 @@
+version: "3.7" # https://docs.docker.com/compose/compose-file/
+
+services:
+# Selenoid
+  selenoid:
+    networks:
+      - test_net
+    image: aerokube/selenoid:latest-release
+    volumes:
+      - "./selenoid_config:/etc/selenoid"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    environment:
+      - OVERRIDE_VIDEO_OUTPUT_DIR=/path/to/config/video
+    command: [ "-conf", "/etc/selenoid/browsers.json", "-container-network", "test_net" ]
+    ports:
+      - "4444:4444"
+  selenoid-ui:
+    image: "aerokube/selenoid-ui"
+    networks:
+      - test_net
+    links:
+      - selenoid
+    depends_on:
+      - selenoid
+    ports:
+      - "8090:8080"
+    command: ["--selenoid-uri", "http://selenoid:4444"]
+  jenkins:
+    image: docker.io/bitnami/jenkins:2
+    ports:
+      - '80:8080'
+    environment:
+      - JENKINS_PASSWORD=jenkins_pass_key
+    volumes:
+      - 'jenkins_data:/bitnami/jenkins'
+    depends_on:
+      - selenoid
+    networks:
+      - test_net
+
+networks:
+  test_net:
+    name: test_net
+    driver: bridge
+
+volumes:
+  jenkins_data:
