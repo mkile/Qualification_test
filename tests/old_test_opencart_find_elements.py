@@ -1,9 +1,9 @@
 import pytest
 from page_objects.MainPage import MainPage
-from page_objects.CategoryPage import CategoryPage
-from page_objects.ProductPage import ProductPage
-from page_objects.UserLoginPage import UserLoginPage
-from page_objects.AdminLoginPage import AdminLoginPage
+from page_objects.old.CategoryPage import CategoryPage
+from page_objects.old.ProductPage import ProductPage
+from page_objects.old.UserLoginPage import UserLoginPage
+from page_objects.old.AdminLoginPage import AdminLoginPage
 import allure
 
 

@@ -1,8 +1,8 @@
 from page_objects.MainPage import MainPage
-from page_objects.AdminLoginPage import AdminLoginPage
-from page_objects.AdminPage import AdminPage
-from page_objects.AddProductPage import AddProductPage
-from page_objects.UserRegisterPage import UserRegisterPage
+from page_objects.old.AdminLoginPage import AdminLoginPage
+from page_objects.old.AdminPage import AdminPage
+from page_objects.old.AddProductPage import AddProductPage
+from page_objects.old.UserRegisterPage import UserRegisterPage
 import time
 import allure
 

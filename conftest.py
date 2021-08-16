@@ -2,9 +2,9 @@ import logging
 
 import pytest
 from selenium import webdriver
-import json
 import os
 import allure
+from requests import get
 
 logging.basicConfig(level=logging.INFO, filename="logs/test.log", format='[%(asctime)s] %(message)s')
 
@@ -13,7 +13,7 @@ def pytest_addoption(parser):
     parser.addoption('--browser',
                      action='store',
                      choices=['chrome', 'firefox', 'opera'],
-                     default='firefox',
+                     default='chrome',
                      help='Укажите драйвер')
     parser.addoption('--url',
                      action='store',
@@ -39,9 +39,8 @@ def pytest_runtest_makereport(item):
 
 @pytest.fixture
 def browser(request):
-
     def finalizer():
-        #Finalizer with screenshot on error
+        # Finalizer with screenshot on error
         logger.info('Running browser Teardown')
         if request.node.rep_call.failed:
             logger.warning('Detected failed test, trying to add screenshot')
@@ -57,14 +56,15 @@ def browser(request):
                 logger.warning('Could not add screenshot')
         driver.quit()
         logger.info("===> Test {} finished".format(test_name))
-    #Read command line parameters
+
+    # Read command line parameters
     browser = request.config.getoption('--browser')
     timeout = request.config.getoption('--timeout')
     executor = request.config.getoption('--executor')
     vnc = request.config.getoption('--vnc')
     url = request.config.getoption('--url')
     resolution = request.config.getoption('--screenresolution')
-    #Init logging and driver
+    # Init logging and driver
     driver = None
     logger = logging.getLogger('BrowserLogger')
     test_name = request.node.name
@@ -105,23 +105,32 @@ def url_api_operational_data(request):
 def url_api_connection_points(request):
     return request.config.getoption('--url') + 'api/v1/connectionPoints'
 
+
+@pytest.fixture(scope='module')
+def connection_points_sample_data(request, url_api_connection_points):
+    data = get(url_api_connection_points)
+    result = [{'pointKey': x['pointKey'],
+               'pointLabel': x['pointLabel'],
+               'pointType': x['pointType']} for x in data.json()['connectionPoints']]
+    return result
+
 # @pytest.fixture(scope='module')
 # def product_description():
-    # product_name = 'TestProduct'
-    # product_desc = 'TestDescription'
-    # product_meta = 'TestMeta'
-    # product_model = 'TestModel'
-    # return product_name, product_desc, product_meta, product_model
+# product_name = 'TestProduct'
+# product_desc = 'TestDescription'
+# product_meta = 'TestMeta'
+# product_model = 'TestModel'
+# return product_name, product_desc, product_meta, product_model
 
 
 # @pytest.fixture(scope='module')
 # def new_user_credentials():
-    # firstname = 'TestFirstName'
-    # lastname = 'TestLastName'
-    # email = 'test@test.ru'
-    # phone = '79415614565'
-    # password = '1234Strong_Pass'
-    # return firstname, lastname, email, phone, password
+# firstname = 'TestFirstName'
+# lastname = 'TestLastName'
+# email = 'test@test.ru'
+# phone = '79415614565'
+# password = '1234Strong_Pass'
+# return firstname, lastname, email, phone, password
 
 
 @pytest.fixture(autouse=True, scope="session")

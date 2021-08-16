@@ -1,20 +1,14 @@
 from selenium.webdriver.common.by import By
-from .BasePage import BasePage
+from page_objects.BasePage import BasePage
 
 
 class MainPage(BasePage):
-    CATEGORY_PAGE_LI_SELECTOR = (By.CSS_SELECTOR,
-                                 "#menu > div.collapse.navbar-collapse.navbar-ex1-collapse > ul > li:nth-child(1) > a")
-    CATEGORY_PAGE_LINK_SELECTOR = (By.CSS_SELECTOR,
-                                   "#menu > div.collapse.navbar-collapse.navbar-ex1-collapse > "
-                                   "ul > li:nth-child(1) > div > a")
-    TABLET_CATEGORY_NAME = (By.CSS_SELECTOR,
-                            "#menu > div.collapse.navbar-collapse.navbar-ex1-collapse > ul > li:nth-child(4) > a")
-    USER_LOGIN_DROPDOWN_NAME = (By.CSS_SELECTOR, 'a.dropdown-toggle[title="My Account"]')
-    USER_LOGIN_LINKS = (By.CSS_SELECTOR, "ul.dropdown-menu.dropdown-menu-right")
-    CURRENCY_DROPDOWN_NAME = (By.CSS_SELECTOR, 'button.btn.btn-link.dropdown-toggle')
-    CURRENCYS_LINKS = (By.CSS_SELECTOR, 'ul.dropdown-menu')
-    ADMIN_PAGE = '/admin/'
+    POINTS_DROPDOWN_SELECTOR = (By.CSS_SELECTOR, 'li[class="dropdown points"] > a.dropdown-toggle')
+    POINTS_DROPDOWN_MAP_SELECTOR = (By.CSS_SELECTOR, 'ul > li > a[href="#/map?loadBalancingZones=false"]')
+
+
+
+
 
     def wait_element(self, element):
         self._verify_element_presence((By.CSS_SELECTOR, element))
