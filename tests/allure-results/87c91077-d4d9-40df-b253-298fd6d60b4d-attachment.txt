@@ -1,1 +1,0 @@
-INFO     BrowserLogger:conftest.py:162 Cleaned allure reports folder - allure-results
