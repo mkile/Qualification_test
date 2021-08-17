@@ -28,11 +28,23 @@ class BasePage:
     def _verify_element_presence(self, locator: tuple):
         self.logger.info(f"Checking web element: '{locator}' presence...")
         try:
+            element = self.browser.get
             self.logger.info(f"Element found")
-            return WebDriverWait(self.browser, self.browser.timeout).until(EC.visibility_of_element_located(locator))
+            return element
         except TimeoutException:
             self.logger.error('Element search timeout error.')
             raise AssertionError("Cant find element by locator: {}".format(locator))
+
+    @allure.step("Getting list of elements children.")
+    def _get_elements_children(self, locator: tuple):
+        self.logger.info(f"Getting list of elements: '{locator}' children...")
+        try:
+            elements = self.browser.find_elements_by_css_selector(locator)
+            self.logger.info(f"Number of elements found {len(elements)}")
+            return elements
+        except TimeoutException:
+            self.logger.error('Elements search error.')
+            raise AssertionError("Cant find elements by locator: {}".format(locator))
 
     def _element(self, locator: tuple):
         return self._verify_element_presence(locator)
@@ -63,3 +75,12 @@ class BasePage:
     def _open_link(self, url):
         self.logger.info(f"Opening link {url} ...")
         self.browser.get(url)
+
+    @allure.step("Finding element in list by text.")
+    def _find_element_by_text(self, elements, text):
+        self.logger.info(f"Finding element by text: {text}")
+        for element in elements:
+            if element.text == text:
+                return element
+        self.logger.info(f"Element with text {text} not found.")
+        raise AssertionError(f"Cant find element by text: {text}")
