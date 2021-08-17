@@ -25,7 +25,7 @@ def pytest_addoption(parser):
                      type=int,
                      help='Время ожидания элемента на странице')
     parser.addoption("--executor", action="store", default="localhost")
-    parser.addoption("--vnc", action="store_true", default=False)
+    parser.addoption("--vnc", action="store_true", default=True)
     parser.addoption("--screenresolution", action="store", default="1920x1080x24")
 
 
@@ -87,7 +87,7 @@ def browser(request):
     driver.timeout = timeout
     request.addfinalizer(finalizer)
     driver.get(url)
-
+    driver.maximize_window()
     return driver
 
 

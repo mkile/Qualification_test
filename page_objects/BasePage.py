@@ -28,7 +28,7 @@ class BasePage:
     def _verify_element_presence(self, locator: tuple):
         self.logger.info(f"Checking web element: '{locator}' presence...")
         try:
-            element = self.browser.get
+            element = WebDriverWait(self.browser, self.browser.timeout).until(EC.visibility_of_element_located(locator))
             self.logger.info(f"Element found")
             return element
         except TimeoutException:
@@ -39,7 +39,8 @@ class BasePage:
     def _get_elements_children(self, locator: tuple):
         self.logger.info(f"Getting list of elements: '{locator}' children...")
         try:
-            elements = self.browser.find_elements_by_css_selector(locator)
+            elements = WebDriverWait(self.browser,
+                                     self.browser.timeout).until(EC.visibility_of_any_elements_located(locator))
             self.logger.info(f"Number of elements found {len(elements)}")
             return elements
         except TimeoutException:
@@ -56,8 +57,17 @@ class BasePage:
 
     @allure.step("Simple web element click")
     def _simple_click_element(self, element):
-        self.logger.info(f"Simple web element : '{element}' click")
-        element.click()
+        self.logger.info(f"Simple web element: '{element}' click")
+        try:
+            element.click()
+        except AttributeError as Err:
+            self.logger.error(f'Element {element} click error.')
+            raise AssertionError("Cant click element. Error {}".format(Err))
+
+    @allure.step("Move cursor to element")
+    def _move_to_element(self, element):
+        self.logger.info(f"Move cursor to element : '{element}'")
+        ActionChains(self.browser).move_to_element(element)
 
     @allure.step("Clicking web element.")
     def _click(self, locator: tuple):

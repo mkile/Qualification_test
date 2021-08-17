@@ -4,7 +4,7 @@ from page_objects.BasePage import BasePage
 
 class MainPage(BasePage):
     # points selectors
-    POINTS_DROPDOWN_SELECTOR = (By.CSS_SELECTOR, 'li.dropdown.points')
+    POINTS_DROPDOWN_SELECTOR = (By.CSS_SELECTOR, 'li.dropdown.points > a.dropdown-toggle')
     POINTS_DROPDOWN_SELECTORS = (By.CSS_SELECTOR, 'li.dropdown.points > ul.dropdown-menu > li > a')
     # zones selectors
     ZONES_DROPDOWN_SELECTOR = (By.CSS_SELECTOR, 'li.dropdown.zones > a')
@@ -29,7 +29,7 @@ class MainPage(BasePage):
 
     def open_points_category(self):
         element = self._verify_element_presence(self.POINTS_DROPDOWN_SELECTOR)
-        self._click_element(element)
+        self._simple_click_element(element)
 
     def open_points_map(self):
         self._verify_element_presence(self.POINTS_DROPDOWN_SELECTORS)
@@ -83,16 +83,24 @@ class MainPage(BasePage):
         elements = self._get_elements_children(self.CALENDAR_DROPDOWN_SELECTORS)
         self._find_element_by_text(elements, 'Actual/Unplanned Interruptions').click()
 
+    def open_umm_category(self):
+        element = self._verify_element_presence(self.UMM_DROPDOWN_SELECTOR)
+        self._click_element(element)
+
+    def open_umm_unavailabilities(self):
+        self._verify_element_presence(self.UMM_DROPDOWN_SELECTOR)
+        elements = self._get_elements_children(self.UMM_DROPDOWN_SELECTORS)
+        self._find_element_by_text(elements, 'Unavailabilities of gas facilities').click()
+
+    def open_umm_other_market_info(self):
+        self._verify_element_presence(self.UMM_DROPDOWN_SELECTOR)
+        elements = self._get_elements_children(self.UMM_DROPDOWN_SELECTORS)
+        self._find_element_by_text(elements, 'Other Market Information').click()
+
     def get_elements_by_id(self):
         self._verify_element_presence(self.POINTS_DROPDOWN_SELECTORS)
         elements = self._get_elements_children(self.POINTS_DROPDOWN_SELECTORS)
         self._click_element(elements(0))
-
-
-
-    def open_umm_category(self):
-        element = self._verify_element_presence(self.UMM_DROPDOWN_SELECTOR)
-        self._click_element(element)
 
     # def open_user_login(self):
     #     element = self._verify_element_presence(self.USER_LOGIN_DROPDOWN_NAME)
