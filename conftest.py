@@ -73,7 +73,6 @@ def browser(request):
     logger.info(f'Resolution parameter ={resolution}')
     # Init logging and driver
     driver = None
-    logger = logging.getLogger('BrowserLogger')
     test_name = request.node.name
     logger.info("===> Test {} started".format(test_name))
 
