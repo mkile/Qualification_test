@@ -1,4 +1,3 @@
-import pytest
 from re import match
 import allure
 

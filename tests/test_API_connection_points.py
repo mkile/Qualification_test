@@ -3,7 +3,6 @@ from random import uniform
 import pytest
 from requests import get
 import allure
-from datetime import datetime, timedelta
 
 """Тестирование API Connection Points"""
 
