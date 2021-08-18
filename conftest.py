@@ -57,13 +57,20 @@ def browser(request):
         driver.quit()
         logger.info("===> Test {} finished".format(test_name))
 
+    logger = logging.getLogger('BrowserLogger')
     # Read command line parameters
     browser = request.config.getoption('--browser')
+    logger.info(f'Browser parameter ={browser}')
     timeout = request.config.getoption('--timeout')
+    logger.info(f'Timeout parameter ={timeout}')
     executor = request.config.getoption('--executor')
+    logger.info(f'Executor parameter ={executor}')
     vnc = request.config.getoption('--vnc')
+    logger.info(f'VNC parameter ={vnc}')
     url = request.config.getoption('--url')
+    logger.info(f'Url parameter ={url}')
     resolution = request.config.getoption('--screenresolution')
+    logger.info(f'Resolution parameter ={resolution}')
     # Init logging and driver
     driver = None
     logger = logging.getLogger('BrowserLogger')

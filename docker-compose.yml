@@ -26,8 +26,8 @@ services:
       - "8090:8080"
     command: ["--selenoid-uri", "http://selenoid:4444"]
   jenkins:
-    image: jenkins
     container_name: jenkins
+    build: jenkins
     #image: docker.io/bitnami/jenkins:2
     ports:
       - '80:8080'
