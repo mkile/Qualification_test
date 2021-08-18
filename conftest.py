@@ -13,7 +13,7 @@ def pytest_addoption(parser):
     parser.addoption('--browser',
                      action='store',
                      choices=['chrome', 'firefox', 'opera'],
-                     default='chrome',
+                     default='firefox',
                      help='Укажите драйвер')
     parser.addoption('--url',
                      action='store',

@@ -9,7 +9,6 @@ from page_objects.PUInterruptions import PUInterruptions
 from page_objects.UMMUnavailabilities import UMMUnavailabilities
 from page_objects.UMMOtherMarketInformation import UMMOtherMarketInformation
 import allure
-from time import sleep
 
 
 def test_open_points_map(browser):
