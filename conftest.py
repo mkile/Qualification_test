@@ -97,22 +97,22 @@ def browser(request):
     return driver
 
 
-@pytest.fixture(scope='module')
+@pytest.fixture(scope='session')
 def url(request):
     return request.config.getoption('--url')
 
 
-@pytest.fixture(scope='module')
+@pytest.fixture(scope='session')
 def url_api_operational_data(request):
     return request.config.getoption('--url') + 'api/v1/operationalData'
 
 
-@pytest.fixture(scope='module')
+@pytest.fixture(scope='session')
 def url_api_connection_points(request):
     return request.config.getoption('--url') + 'api/v1/connectionPoints'
 
 
-@pytest.fixture(scope='module')
+@pytest.fixture(scope='session')
 def connection_points_sample_data(request, url_api_connection_points):
     data = get(url_api_connection_points)
     result = [{'pointKey': x['pointKey'],
