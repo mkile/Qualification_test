@@ -1,10 +1,10 @@
 import logging
-
 import pytest
-from selenium import webdriver
 import os
 import allure
+
 from requests import get
+from selenium import webdriver
 
 logging.basicConfig(level=logging.INFO, filename="logs/test.log", format='[%(asctime)s] %(message)s')
 
@@ -97,46 +97,28 @@ def browser(request):
     return driver
 
 
-@pytest.fixture(scope='module')
+@pytest.fixture(scope='session')
 def url(request):
     return request.config.getoption('--url')
 
 
-@pytest.fixture(scope='module')
+@pytest.fixture(scope='session')
 def url_api_operational_data(request):
     return request.config.getoption('--url') + 'api/v1/operationalData'
 
 
-@pytest.fixture(scope='module')
+@pytest.fixture(scope='session')
 def url_api_connection_points(request):
     return request.config.getoption('--url') + 'api/v1/connectionPoints'
 
 
-@pytest.fixture(scope='module')
+@pytest.fixture(scope='session')
 def connection_points_sample_data(request, url_api_connection_points):
     data = get(url_api_connection_points)
     result = [{'pointKey': x['pointKey'],
                'pointLabel': x['pointLabel'],
                'pointType': x['pointType']} for x in data.json()['connectionPoints']]
     return result
-
-# @pytest.fixture(scope='module')
-# def product_description():
-# product_name = 'TestProduct'
-# product_desc = 'TestDescription'
-# product_meta = 'TestMeta'
-# product_model = 'TestModel'
-# return product_name, product_desc, product_meta, product_model
-
-
-# @pytest.fixture(scope='module')
-# def new_user_credentials():
-# firstname = 'TestFirstName'
-# lastname = 'TestLastName'
-# email = 'test@test.ru'
-# phone = '79415614565'
-# password = '1234Strong_Pass'
-# return firstname, lastname, email, phone, password
 
 
 @pytest.fixture(autouse=True, scope="session")
@@ -149,20 +131,6 @@ def get_environment(pytestconfig, request):
     }
 
     tests_root = pytestconfig.rootdir
-    with open(f'{tests_root}/{alluredir}/environment.properties', 'w') as f:
+    with open(f'{tests_root}/environment.properties', 'w') as f:
         for k, v in props.items():
             f.write(f'{k}={v}\n')
-
-
-@pytest.fixture(autouse=True, scope="session")
-def clean_allure_results_dir(request):
-    logger = logging.getLogger('BrowserLogger')
-    alluredir = request.config.getoption('--alluredir')
-    for root, dirs, files in os.walk(alluredir):
-        for filename in files:
-            if filename != 'categories.json':
-                try:
-                    os.remove(os.path.join(alluredir, filename))
-                except Exception as Err:
-                    logger.warning(f'Skipped file:{filename} due to error {Err}')
-    logger.info(f'Cleaned allure reports folder - {alluredir}')

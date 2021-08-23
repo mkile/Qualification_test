@@ -1,5 +1,6 @@
 from selenium.webdriver.common.by import By
 from page_objects.BasePage import BasePage
+from page_objects.elements.ObjectSearch import ObjectSearch
 
 
 class MainPage(BasePage):
@@ -19,7 +20,16 @@ class MainPage(BasePage):
     OPERATORS_SELECTOR = (By.CSS_SELECTOR, 'li.operators > a > span')
     # Map selectors
     MAP_POINTS_SELECTOR = (By.CSS_SELECTOR, 'div.map-marker-cb_itp_import-small')
+    MAP_PH_POINTS_SELECTOR = (By.CSS_SELECTOR, '#map > div.leaflet-map-pane > div.leaflet-objects-pane > '
+                                               'div.leaflet-marker-pane > div.map-marker-physical')
     MAP_ZONES_SELECTOR = (By.CSS_SELECTOR, 'div.map-marker-balancing-zone-small')
+    MAP_Z_POINTS_SELECTOR = (By.CSS_SELECTOR, '#map > div.leaflet-map-pane > div.leaflet-objects-pane > '
+                                              'div.leaflet-marker-pane > div.map-marker-balancing-zone-small')
+    # search point scenario selectors
+    FOUND_ELEMENT_SELECTOR = (By.CSS_SELECTOR,
+                              'div.panel-group.list-points > div > div > div > h4[data-toggle="tooltip"]')
+    ACCESS_DATA_SELECTOR = (By.CSS_SELECTOR, 'div.panel-group.list-points > div > div > div.connexion-bz.clearfix > '
+                                             'div.rightPart > a.pointer.action.data')
 
     def wait_element(self, element):
         self._verify_element_presence((By.CSS_SELECTOR, element))
@@ -100,7 +110,32 @@ class MainPage(BasePage):
     def get_elements_by_id(self):
         self._verify_element_presence(self.POINTS_DROPDOWN_SELECTORS)
         elements = self._get_elements_children(self.POINTS_DROPDOWN_SELECTORS)
-        self._click_element(elements(0))
+        self._click_element(elements[0])
+
+    def enter_object_name(self, object_name):
+        ObjectSearch(self.browser).input_object_name(object_name)
+
+    def open_found_points_dropdown(self):
+        self._verify_element_presence(self.FOUND_ELEMENT_SELECTOR)
+        elements = self._get_elements_children(self.FOUND_ELEMENT_SELECTOR)
+        self._click_element(elements[0])
+
+    def access_first_point_data_page(self):
+        self._verify_element_presence(self.ACCESS_DATA_SELECTOR)
+        elements = self._get_elements_children(self.ACCESS_DATA_SELECTOR)
+        self._click_element(elements[0])
+
+    def check_points_is_on_map(self):
+        self._verify_element_presence(self.MAP_PH_POINTS_SELECTOR)
+
+    def check_zones_not_on_map(self):
+        self._check_element_absence(self.MAP_Z_POINTS_SELECTOR)
+
+    def check_zones_is_on_map(self):
+        self._verify_element_presence(self.MAP_Z_POINTS_SELECTOR)
+
+    def check_points_not_on_map(self):
+        self._check_element_absence(self.MAP_PH_POINTS_SELECTOR)
 
     # def open_user_login(self):
     #     element = self._verify_element_presence(self.USER_LOGIN_DROPDOWN_NAME)

@@ -1,10 +1,11 @@
+import logging
+import allure
+
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.action_chains import ActionChains
-import logging
-import allure
 
 
 class BasePage:
@@ -94,3 +95,12 @@ class BasePage:
                 return element
         self.logger.info(f"Element with text {text} not found.")
         raise AssertionError(f"Cant find element by text: {text}")
+
+    @allure.step("Checking if element is not present.")
+    def _check_element_absence(self, locator):
+        self.logger.info(f"Checking if element is absent : {locator}")
+        try:
+            WebDriverWait(self.browser, self.browser.timeout).until(EC.visibility_of_any_elements_located(locator))
+            raise AssertionError('Element found but it should not be')
+        except TimeoutException as Err:
+            self.logger.info(f"Success: Element is not found")

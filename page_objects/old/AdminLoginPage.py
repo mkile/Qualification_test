@@ -1,5 +1,5 @@
 from page_objects.MainPage import MainPage
-from page_objects.old.elements.AdminLoginForm import AdminLoginForm
+from page_objects.elements.ObjectSearch import AdminLoginForm
 
 
 class AdminLoginPage(MainPage):
