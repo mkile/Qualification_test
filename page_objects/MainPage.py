@@ -34,7 +34,6 @@ class MainPage(BasePage):
     # map control elements
     ZOOM_IN_SELECTOR = (By.CSS_SELECTOR, 'a#zin')
 
-
     def wait_element(self, element):
         self._verify_element_presence((By.CSS_SELECTOR, element))
 

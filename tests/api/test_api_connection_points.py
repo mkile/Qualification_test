@@ -1,7 +1,6 @@
 import pytest
 import allure
 
-from random import sample
 from requests import get
 
 
@@ -38,9 +37,10 @@ def test_points_data_ic_and_planned(url_api_connection_points, key_name, paramet
 
 
 @allure.feature('API Connection Points')
-@pytest.mark.parametrize("parameter", (12, 14, 25, 27))  # sample(range(10, 30), 4)
-def test_points_data_limit(url_api_connection_points, parameter):
+@pytest.mark.parametrize("parameter", range(4))  # sample(range(10, 30), 4)
+def test_points_data_limit(url_api_connection_points, parameter, random_number_upto_30):
     """Тестирование корректной отработки ключа limit"""
+    parameter = random_number_upto_30[parameter]
     key = '?limit='
     url = url_api_connection_points + key + str(parameter)
     allure.dynamic.title(f'Тестирование API: {url_api_connection_points}, параметр: {key}, равен {parameter}')
@@ -52,9 +52,14 @@ def test_points_data_limit(url_api_connection_points, parameter):
 
 @allure.feature('API Connection Points')
 @pytest.mark.parametrize("key_name", ['pointKey', 'pointLabel', 'pointType'])
-@pytest.mark.parametrize("parameter", (12, 33, 44, 55, 78))  # sample(range(99), 4)
-def test_points_data_points_data(url_api_connection_points, connection_points_sample_data, key_name, parameter):
+@pytest.mark.parametrize("parameter", range(5))  # sample(range(99), 4)
+def test_points_data_points_data(url_api_connection_points,
+                                 connection_points_sample_data,
+                                 key_name,
+                                 parameter,
+                                 random_number_upto_99):
     """Тестирование отработки ключей pointKey, pointLabel, pointType и корректного отражения его в данных"""
+    parameter = random_number_upto_99[parameter]
     url = f'{url_api_connection_points}?{key_name}={connection_points_sample_data[parameter][key_name]}'
     allure.dynamic.title(f'Тестирование API: {url_api_connection_points}, параметр: {key_name}, '
                          f'равен {connection_points_sample_data[parameter][key_name]}')

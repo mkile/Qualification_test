@@ -1,7 +1,6 @@
 import pytest
 import allure
 
-from random import sample
 from requests import get
 from datetime import datetime, timedelta
 
@@ -38,9 +37,10 @@ def test_op_data_indicators(url_api_operational_data, indicator):
 
 @allure.feature('API Operational Data')
 @pytest.mark.parametrize("indicator", ['Allocation', 'Firm Technical', 'GCV', 'Physical Flow'])
-@pytest.mark.parametrize("parameter", (12, 22, 11))  # sample(range(1, 30), 2)
-def test_op_data_from(url_api_operational_data, indicator, parameter):
+@pytest.mark.parametrize("parameter", range(3))  # sample(range(1, 30), 2)
+def test_op_data_from(url_api_operational_data, indicator, parameter, random_number_upto_30):
     """Тестирование корректной отработки ключа from и загрузки дат начиная с указанной для разных индикаторов"""
+    parameter = random_number_upto_30[parameter]
     date = datetime.strftime(datetime.today() - timedelta(days=parameter), '%Y-%m-%d')
     url = f'{url_api_operational_data}?indicator={indicator}&from={date}'
     allure.dynamic.title(f'Тестирование API: {url_api_operational_data}, параметр indicator: {indicator}, параметр '
@@ -53,9 +53,10 @@ def test_op_data_from(url_api_operational_data, indicator, parameter):
 
 
 @allure.feature('API Operational Data')
-@pytest.mark.parametrize("parameter", (5, 15, 25))  # sample(range(1, 30), 3)
-def test_op_data_limit(url_api_operational_data, parameter):
+@pytest.mark.parametrize("parameter", range(3))  # sample(range(1, 30), 3)
+def test_op_data_limit(url_api_operational_data, parameter, random_number_upto_30):
     """Тестирование корректной отработки ключа limit"""
+    parameter = random_number_upto_30[parameter]
     key = '?limit='
     url = url_api_operational_data + key + str(parameter)
     allure.dynamic.title(f'Тестирование API: {url_api_operational_data}, параметр: {key}, равен {parameter}')
@@ -81,9 +82,10 @@ def test_op_data_periodtype(url_api_operational_data, parameter):
 
 @allure.feature('API Operational Data')
 @pytest.mark.parametrize("indicator", ['Allocation', 'Firm Technical', 'GCV', 'Physical Flow'])
-@pytest.mark.parametrize("parameter", (2, 5)) # sample(range(2, 10), 2)
-def test_op_data_to(url_api_operational_data, indicator, parameter):
+@pytest.mark.parametrize("parameter", range(2))  # sample(range(2, 10), 2)
+def test_op_data_to(url_api_operational_data, indicator, parameter, random_number_upto_10):
     """Тестирование корректной отработки ключа to и загрузки дат заканчивая на указанной для разных индикаторов"""
+    parameter = random_number_upto_10[parameter]
     from_date = datetime.strftime(datetime.today() - timedelta(days=parameter * 2), '%Y-%m-%d')
     to_date = datetime.strftime(datetime.today() - timedelta(days=parameter), '%Y-%m-%d')
     url = f'{url_api_operational_data}?indicator={indicator}&from={from_date}&to={to_date}'

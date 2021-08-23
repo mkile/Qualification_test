@@ -1,8 +1,6 @@
 import pytest
 import allure
 
-from random import sample
-
 from page_objects.MainPage import MainPage
 from page_objects.PointsAdvancedSearch import PointsAdvancedSearch
 from page_objects.PointsData import PointsData
@@ -153,4 +151,3 @@ def test_point_search_from_main_page(browser, connection_points_sample_data, poi
     PointsData(browser).data_side_panel_check()
     PointsData(browser).data_side_panel_chart_range_check()
     PointsData(browser).data_side_panel_indicators_check()
-

@@ -5,6 +5,7 @@ import allure
 
 from requests import get
 from selenium import webdriver
+from random import sample
 
 logging.basicConfig(level=logging.INFO, filename="logs/test.log", format='[%(asctime)s] %(message)s')
 
@@ -113,7 +114,7 @@ def url_api_connection_points(request):
 
 
 @pytest.fixture(scope='session')
-def connection_points_sample_data(request, url_api_connection_points):
+def connection_points_sample_data(url_api_connection_points):
     data = get(url_api_connection_points)
     result = [{'pointKey': x['pointKey'],
                'pointLabel': x['pointLabel'],
@@ -122,8 +123,7 @@ def connection_points_sample_data(request, url_api_connection_points):
 
 
 @pytest.fixture(autouse=True, scope="session")
-def get_environment(pytestconfig, request):
-    alluredir = request.config.getoption('--alluredir')
+def get_environment(pytestconfig):
     props = {
         'Shell': os.getenv('SHELL'),
         'Terminal': os.getenv('TERM'),
@@ -134,3 +134,18 @@ def get_environment(pytestconfig, request):
     with open(f'{tests_root}/environment.properties', 'w') as f:
         for k, v in props.items():
             f.write(f'{k}={v}\n')
+
+
+@pytest.fixture()
+def random_number_upto_10():
+    return sample(range(1, 30), 10)
+
+
+@pytest.fixture()
+def random_number_upto_30():
+    return sample(range(1, 30), 10)
+
+
+@pytest.fixture()
+def random_number_upto_99():
+    return sample(range(99), 10)

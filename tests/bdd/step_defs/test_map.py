@@ -1,4 +1,4 @@
-from pytest_bdd import scenarios, given, when, then, parsers
+from pytest_bdd import scenarios, given, when, then
 from page_objects.MainPage import MainPage
 
 scenarios('../features/map_point_open_data.feature')
@@ -16,4 +16,4 @@ def click_map_point(browser):
 
 @then('small point locator is available')
 def click_map_point(browser):
-    MainPage(browser).check_small_point_on_the_map(browser)
+    MainPage(browser).check_small_point_on_the_map()
