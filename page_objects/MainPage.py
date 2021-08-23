@@ -25,11 +25,15 @@ class MainPage(BasePage):
     MAP_ZONES_SELECTOR = (By.CSS_SELECTOR, 'div.map-marker-balancing-zone-small')
     MAP_Z_POINTS_SELECTOR = (By.CSS_SELECTOR, '#map > div.leaflet-map-pane > div.leaflet-objects-pane > '
                                               'div.leaflet-marker-pane > div.map-marker-balancing-zone-small')
+    MAP_PH_POINTS_SMALL_SELECTOR = (By.CSS_SELECTOR, 'div.map-marker-small')
     # search point scenario selectors
     FOUND_ELEMENT_SELECTOR = (By.CSS_SELECTOR,
                               'div.panel-group.list-points > div > div > div > h4[data-toggle="tooltip"]')
     ACCESS_DATA_SELECTOR = (By.CSS_SELECTOR, 'div.panel-group.list-points > div > div > div.connexion-bz.clearfix > '
                                              'div.rightPart > a.pointer.action.data')
+    # map control elements
+    ZOOM_IN_SELECTOR = (By.CSS_SELECTOR, 'a#zin')
+
 
     def wait_element(self, element):
         self._verify_element_presence((By.CSS_SELECTOR, element))
@@ -136,6 +140,13 @@ class MainPage(BasePage):
 
     def check_points_not_on_map(self):
         self._check_element_absence(self.MAP_PH_POINTS_SELECTOR)
+
+    def click_zoom_in(self):
+        element = self._verify_element_presence(self.ZOOM_IN_SELECTOR)
+        self._click_element(element)
+
+    def check_small_point_on_the_map(self):
+        self._check_element_absence(self.MAP_PH_POINTS_SMALL_SELECTOR)
 
     # def open_user_login(self):
     #     element = self._verify_element_presence(self.USER_LOGIN_DROPDOWN_NAME)
