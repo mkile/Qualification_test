@@ -7,7 +7,7 @@ from requests import get
 from selenium import webdriver
 from random import sample
 
-logging.basicConfig(level=logging.INFO, filename="logs/test.log", format='[%(asctime)s] %(message)s')
+logging.basicConfig(level=logging.INFO, filename="logs/test.log",  format='[%(asctime)s] %(message)s')
 
 
 def pytest_addoption(parser):
@@ -53,7 +53,7 @@ def browser(request):
                               name=request.function.__name__,
                               attachment_type=allure.attachment_type.PNG)
                 logger.warning('Screenshot attached')
-            except Exception as Err:
+            except Exception:
                 logger.warning('Could not add screenshot')
         driver.quit()
         logger.info("===> Test {} finished".format(test_name))

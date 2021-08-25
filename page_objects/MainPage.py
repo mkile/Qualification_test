@@ -33,6 +33,9 @@ class MainPage(BasePage):
                                              'div.rightPart > a.pointer.action.data')
     # map control elements
     ZOOM_IN_SELECTOR = (By.CSS_SELECTOR, 'a#zin')
+    FILTER_PANEL_SELECTOR = (By.CSS_SELECTOR, 'div.rightPanel > div > a.filter.active')
+    POINTS_FILTER_DROPDOWN_SELECTOR = (By.CSS_SELECTOR, 'ul.list-display > li > div > select')
+    POINTS_FILTER_TEMPLATE = 'ul.list-display > li > div > select > option[value="{}"]'
 
     def wait_element(self, element):
         self._verify_element_presence((By.CSS_SELECTOR, element))
@@ -145,28 +148,15 @@ class MainPage(BasePage):
         self._click_element(element)
 
     def check_small_point_on_the_map(self):
-        self._check_element_absence(self.MAP_PH_POINTS_SMALL_SELECTOR)
+        self._verify_element_presence(self.MAP_PH_POINTS_SMALL_SELECTOR)
 
-    # def open_user_login(self):
-    #     element = self._verify_element_presence(self.USER_LOGIN_DROPDOWN_NAME)
-    #     self._click_element(element)
-    #     element = self._verify_element_presence(self.USER_LOGIN_LINKS)
-    #     element = element.find_elements_by_css_selector("a")
-    #     self._click_element(element[1])
-    #
-    # def open_user_register(self):
-    #     element = self._verify_element_presence(self.USER_LOGIN_DROPDOWN_NAME)
-    #     self._click_element(element)
-    #     element = self._verify_element_presence(self.USER_LOGIN_LINKS)
-    #     element = element.find_elements_by_css_selector("a")
-    #     self._click_element(element[0])
-    #
-    # def open_admin_login(self):
-    #     self._open_link(self.browser.current_url + self.ADMIN_PAGE)
-    #
-    # def switch_currency(self, currency):
-    #     element = self._verify_element_presence(self.CURRENCY_DROPDOWN_NAME)
-    #     self._click_element(element)
-    #     element = self._verify_element_presence(self.CURRENCYS_LINKS)
-    #     element = element.find_elements_by_css_selector("button")
-    #     self._click_element(element[currency])
+    def click_filter_panel(self):
+        element = self._verify_element_presence(self.FILTER_PANEL_SELECTOR)
+        self._simple_click_element(element)
+
+    def filter_map_points(self, option):
+        element = self._verify_element_presence((By.CSS_SELECTOR, self.POINTS_FILTER_TEMPLATE.format(option)))
+        self._simple_click_element(element)
+
+    def check_point_type_on_the_map(self, point_type):
+        self._verify_element_presence((By.CSS_SELECTOR, point_type))

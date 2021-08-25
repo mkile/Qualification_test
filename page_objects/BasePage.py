@@ -102,5 +102,5 @@ class BasePage:
         try:
             WebDriverWait(self.browser, self.browser.timeout).until(EC.visibility_of_any_elements_located(locator))
             raise AssertionError('Element found but it should not be')
-        except TimeoutException as Err:
+        except TimeoutException:
             self.logger.info(f"Success: Element is not found")
