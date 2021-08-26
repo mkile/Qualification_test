@@ -15,10 +15,10 @@ def test_op_data_indicators_checked(url_api_operational_data, parameter_name, pa
     key = f'?{parameter_name}='
     url = url_api_operational_data + key + parameter_value
     allure.dynamic.title(f'Тестирование API: {url_api_operational_data}, параметр: {key}, равен {parameter_value}')
-    allure.step(f'Обращение по ссылке: {url}')
-    result = get(url)
-    allure.step(f'Сравнение результата в meta по параметру {key} с {parameter_value}')
-    assert result.json()['meta']['query'][parameter_name] == parameter_value
+    with allure.step(f'Обращение по ссылке: {url}'):
+        result = get(url)
+    with allure.step(f'Сравнение результата в meta по параметру {key} с {parameter_value}'):
+        assert result.json()['meta']['query'][parameter_name] == parameter_value
 
 
 @allure.feature('API Operational Data')
@@ -28,11 +28,11 @@ def test_op_data_indicators(url_api_operational_data, indicator):
     key = '?indicator='
     url = url_api_operational_data + key + indicator
     allure.dynamic.title(f'Тестирование API: {url_api_operational_data}, параметр: {key}, равен {indicator}')
-    allure.step(f'Обращение по ссылке: {url}')
-    result = get(url)
-    allure.step(f'Проверка отсутствия других индикаторов кроме {indicator} и наличия его самого.')
-    indicators = set([x['indicator'] for x in result.json()['operationalData']])
-    assert (len(indicators) == 1) & (indicator in indicators)
+    with allure.step(f'Обращение по ссылке: {url}'):
+        result = get(url)
+    with allure.step(f'Проверка отсутствия других индикаторов кроме {indicator} и наличия его самого.'):
+        indicators = set([x['indicator'] for x in result.json()['operationalData']])
+        assert (len(indicators) == 1) & (indicator in indicators)
 
 
 @allure.feature('API Operational Data')
@@ -45,11 +45,11 @@ def test_op_data_from(url_api_operational_data, indicator, parameter, random_num
     url = f'{url_api_operational_data}?indicator={indicator}&from={date}'
     allure.dynamic.title(f'Тестирование API: {url_api_operational_data}, параметр indicator: {indicator}, параметр '
                          f'from равен {date}')
-    allure.step(f'Обращение по ссылке: {url}')
-    result = get(url)
-    allure.step(f'Проверка отсутствия дат ранее {date}')
-    dates = [x['periodFrom'][:10] for x in result.json()['operationalData']]
-    assert min(dates) == date
+    with allure.step(f'Обращение по ссылке: {url}'):
+        result = get(url)
+    with allure.step(f'Проверка отсутствия дат ранее {date}'):
+        dates = [x['periodFrom'][:10] for x in result.json()['operationalData']]
+        assert min(dates) == date
 
 
 @allure.feature('API Operational Data')
@@ -60,10 +60,10 @@ def test_op_data_limit(url_api_operational_data, parameter, random_number_upto_3
     key = '?limit='
     url = url_api_operational_data + key + str(parameter)
     allure.dynamic.title(f'Тестирование API: {url_api_operational_data}, параметр: {key}, равен {parameter}')
-    allure.step(f'Обращение по ссылке: {url}')
-    result = get(url)
-    allure.step(f'Проверка соответствия количества данных {parameter}.')
-    assert len(result.json()['operationalData']) == parameter
+    with allure.step(f'Обращение по ссылке: {url}'):
+        result = get(url)
+    with allure.step(f'Проверка соответствия количества данных {parameter}.'):
+        assert len(result.json()['operationalData']) == parameter
 
 
 @allure.feature('API Operational Data')
@@ -73,11 +73,11 @@ def test_op_data_periodtype(url_api_operational_data, parameter):
     key = '?periodType='
     url = url_api_operational_data + key + parameter
     allure.dynamic.title(f'Тестирование API: {url_api_operational_data}, параметр: {key}, равен {parameter}')
-    allure.step(f'Обращение по ссылке: {url}')
-    result = get(url)
-    allure.step(f'Проверка того, что все данные по ключу {key} равны {parameter}')
-    periodtype = set([x['periodType'] for x in result.json()['operationalData']])
-    assert (len(periodtype) == 1) & (parameter in periodtype)
+    with allure.step(f'Обращение по ссылке: {url}'):
+        result = get(url)
+    with allure.step(f'Проверка того, что все данные по ключу {key} равны {parameter}'):
+        periodtype = set([x['periodType'] for x in result.json()['operationalData']])
+        assert (len(periodtype) == 1) & (parameter in periodtype)
 
 
 @allure.feature('API Operational Data')
@@ -91,8 +91,8 @@ def test_op_data_to(url_api_operational_data, indicator, parameter, random_numbe
     url = f'{url_api_operational_data}?indicator={indicator}&from={from_date}&to={to_date}'
     allure.dynamic.title(f'Тестирование API: {url_api_operational_data}, параметр indicator: {indicator}, параметр '
                          f'from равен {from_date}, параметр to равен: {to_date}')
-    allure.step(f'Обращение по ссылке: {url}')
-    result = get(url)
-    allure.step(f'Проверка отсутствия дат позднее {to_date}')
-    dates = [x['periodFrom'][:10] for x in result.json()['operationalData']]
-    assert max(dates) == to_date
+    with allure.step(f'Обращение по ссылке: {url}'):
+        result = get(url)
+    with allure.step(f'Проверка отсутствия дат позднее {to_date}'):
+        dates = [x['periodFrom'][:10] for x in result.json()['operationalData']]
+        assert max(dates) == to_date
