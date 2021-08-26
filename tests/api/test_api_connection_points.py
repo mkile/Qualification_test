@@ -14,10 +14,10 @@ def test_points_data_extended(url_api_connection_points, parameter_value):
     key = '?extended='
     url = url_api_connection_points + key + parameter_value
     allure.dynamic.title(f'Тестирование API: {url_api_connection_points}, параметр: {key}, равен {parameter_value}')
-    allure.step(f'Обращение по ссылке: {url}')
-    result = get(url)
-    allure.step(f'Сравнение результата в meta по параметру {key} с {parameter_value}')
-    assert result.json()['meta']['query']['extended'] == parameter_value
+    with allure.step(f'Обращение по ссылке: {url}'):
+        result = get(url)
+    with allure.step(f'Сравнение результата в meta по параметру {key} с {parameter_value}'):
+        assert result.json()['meta']['query']['extended'] == parameter_value
 
 
 @allure.feature('API Connection Points')
@@ -27,13 +27,13 @@ def test_points_data_ic_and_planned(url_api_connection_points, key_name, paramet
     """Тестирование отработки ключей isInterconnection, isPlanned и корректного отражения его в данных"""
     url = f'{url_api_connection_points}?{key_name}={parameter}'
     allure.dynamic.title(f'Тестирование API: {url_api_connection_points}, параметр: {key_name}, равен {parameter}')
-    allure.step(f'Обращение по ссылке: {url}')
-    result = get(url)
-    allure.step(f'Обработка данных и подсчёт значений ключа {key_name}')
-    values = set([x[key_name] for x in result.json()['connectionPoints']])
+    with allure.step(f'Обращение по ссылке: {url}'):
+        result = get(url)
+    with allure.step(f'Обработка данных и подсчёт значений ключа {key_name}'):
+        values = set([x[key_name] for x in result.json()['connectionPoints']])
     check_value = bool(int(parameter))
-    allure.step(f'Проверка того, что все точки имеют значение ключа {key_name} {check_value}')
-    assert (len(values) == 1) & (check_value in values)
+    with allure.step(f'Проверка того, что все точки имеют значение ключа {key_name} {check_value}'):
+        assert (len(values) == 1) & (check_value in values)
 
 
 @allure.feature('API Connection Points')
@@ -44,10 +44,10 @@ def test_points_data_limit(url_api_connection_points, parameter, random_number_u
     key = '?limit='
     url = url_api_connection_points + key + str(parameter)
     allure.dynamic.title(f'Тестирование API: {url_api_connection_points}, параметр: {key}, равен {parameter}')
-    allure.step(f'Обращение по ссылке: {url}')
-    result = get(url)
-    allure.step(f'Проверка соответствия количества данных {parameter}.')
-    assert len(result.json()['connectionPoints']) == parameter
+    with allure.step(f'Обращение по ссылке: {url}'):
+        result = get(url)
+    with allure.step(f'Проверка соответствия количества данных {parameter}.'):
+        assert len(result.json()['connectionPoints']) == parameter
 
 
 @allure.feature('API Connection Points')
@@ -63,8 +63,8 @@ def test_points_data_points_data(url_api_connection_points,
     url = f'{url_api_connection_points}?{key_name}={connection_points_sample_data[parameter][key_name]}'
     allure.dynamic.title(f'Тестирование API: {url_api_connection_points}, параметр: {key_name}, '
                          f'равен {connection_points_sample_data[parameter][key_name]}')
-    allure.step(f'Обращение по ссылке: {url}')
-    result = get(url)
-    allure.step(f'Обработка данных и подсчёт значений ключа {key_name}')
-    values = set([x[key_name] for x in result.json()['connectionPoints']])
-    assert (len(values) == 1) & (connection_points_sample_data[parameter][key_name] in values)
+    with allure.step(f'Обращение по ссылке: {url}'):
+        result = get(url)
+    with allure.step(f'Обработка данных и подсчёт значений ключа {key_name}'):
+        values = set([x[key_name] for x in result.json()['connectionPoints']])
+        assert (len(values) == 1) & (connection_points_sample_data[parameter][key_name] in values)
