@@ -5,6 +5,7 @@ CONVERTERS = dict(filter=str, point_type=str)
 scenarios('../features/map_point_data.feature', example_converters=CONVERTERS)
 
 
+@then('small point locators are on zoomed in map')
 def click_map_point(browser):
     MainPage(browser).check_small_point_on_the_map()
 
@@ -15,12 +16,12 @@ def entsog_map_displayed(browser):
 
 
 @when('user clicks zoom in')
-def click_map_point(browser):
+def click_zoom_in(browser):
     MainPage(browser).click_zoom_in()
 
 
 @when('user opens filters panel')
-def click_map_point(browser):
+def open_filters_panel(browser):
     MainPage(browser).click_filter_panel()
 
 

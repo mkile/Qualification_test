@@ -4,16 +4,16 @@ Feature: Points Map
 	I want to zoom in and see elements changing
 	And filter map points by type
 	
-	Scenario: Locate small point locators on zoomed in map
+	Scenario:
 		Given ENTSOG map is displayed
 		When user clicks zoom in
 		And user clicks zoom in
 		And user clicks zoom in
+		Then small point locators are on zoomed in map
 
 	Scenario Outline: Filter points
 		Given ENTSOG map is displayed
 		When user opens filters panel
-#		And user clicks points filter select
 		And user sets infrastructure filter to <filter>
 		Then <point_type> points are on the map
 		Examples:
