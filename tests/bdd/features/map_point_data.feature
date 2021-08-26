@@ -3,8 +3,8 @@ Feature: Points Map
 	As ENTSOG user,
 	I want to zoom in and see elements changing
 	And filter map points by type
-	
-	Scenario:
+
+	Scenario: Zoom in map
 		Given ENTSOG map is displayed
 		When user clicks zoom in
 		And user clicks zoom in
