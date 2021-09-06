@@ -5,9 +5,9 @@ CONVERTERS = dict(filter=str, point_type=str)
 scenarios('../features/map_point_data.feature', example_converters=CONVERTERS)
 
 
-@then('small point locators are on zoomed in map')
+@then('big point locators are on zoomed in map')
 def click_map_point(browser):
-    MainPage(browser).check_small_point_on_the_map()
+    MainPage(browser).big_small_point_on_the_map()
 
 
 @given('ENTSOG map is displayed')

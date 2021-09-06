@@ -34,6 +34,16 @@ class BasePage:
             return element
         except TimeoutException:
             self.logger.error('Element search timeout error.')
+            self.logger.error('Trying to attach screenshot.')
+            allure.attach(self.browser.get_screenshot_as_png(),
+                          name=f'screenshot-fail-to-find-{locator[1]}',
+                          attachment_type=allure.attachment_type.PNG)
+            self.logger.warning('Screenshot attached')
+            self.logger.error('Trying to attach page source.')
+            allure.attach(self.browser.page_source,
+                          name=f'page_source-fail-to-find-{locator[1]}',
+                          attachment_type=allure.attachment_type.HTML)
+            self.logger.warning('Source attached')
             raise AssertionError("Cant find element by locator: {}".format(locator))
 
     @allure.step("Getting list of elements children.")

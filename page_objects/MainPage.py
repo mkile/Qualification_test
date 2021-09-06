@@ -1,3 +1,5 @@
+import time
+
 from selenium.webdriver.common.by import By
 from page_objects.BasePage import BasePage
 from page_objects.elements.ObjectSearch import ObjectSearch
@@ -25,7 +27,7 @@ class MainPage(BasePage):
     MAP_ZONES_SELECTOR = (By.CSS_SELECTOR, 'div.map-marker-balancing-zone-small')
     MAP_Z_POINTS_SELECTOR = (By.CSS_SELECTOR, '#map > div.leaflet-map-pane > div.leaflet-objects-pane > '
                                               'div.leaflet-marker-pane > div.map-marker-balancing-zone-small')
-    MAP_PH_POINTS_SMALL_SELECTOR = (By.CSS_SELECTOR, 'div.map-marker-small')
+    MAP_PH_POINTS_SMALL_SELECTOR = (By.CSS_SELECTOR, 'div.map-marker-big')
     # search point scenario selectors
     FOUND_ELEMENT_SELECTOR = (By.CSS_SELECTOR,
                               'div.panel-group.list-points > div > div > div > h4[data-toggle="tooltip"]')
@@ -144,10 +146,12 @@ class MainPage(BasePage):
         self._check_element_absence(self.MAP_PH_POINTS_SELECTOR)
 
     def click_zoom_in(self):
+        # time.sleep(10)
         element = self._verify_element_presence(self.ZOOM_IN_SELECTOR)
+        # time.sleep(10)
         self._click_element(element)
 
-    def check_small_point_on_the_map(self):
+    def big_small_point_on_the_map(self):
         self._verify_element_presence(self.MAP_PH_POINTS_SMALL_SELECTOR)
 
     def click_filter_panel(self):

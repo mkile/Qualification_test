@@ -9,7 +9,7 @@ Feature: Points Map
 		When user clicks zoom in
 		And user clicks zoom in
 		And user clicks zoom in
-		Then small point locators are on zoomed in map
+		Then big point locators are on zoomed in map
 
 	Scenario Outline: Filter points
 		Given ENTSOG map is displayed
