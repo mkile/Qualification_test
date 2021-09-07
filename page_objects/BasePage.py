@@ -42,7 +42,7 @@ class BasePage:
             self.logger.error('Trying to attach page source.')
             allure.attach(self.browser.page_source,
                           name=f'page_source-fail-to-find-{locator[1]}',
-                          attachment_type=allure.attachment_type.HTML)
+                          attachment_type=allure.attachment_type.TEXT)
             self.logger.warning('Source attached')
             raise AssertionError("Cant find element by locator: {}".format(locator))
 

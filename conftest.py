@@ -137,11 +137,6 @@ def get_environment(pytestconfig):
 
 
 @pytest.fixture()
-def random_number_upto_10():
-    return sample(range(1, 30), 10)
-
-
-@pytest.fixture()
 def random_number_upto_30():
     return sample(range(1, 30), 10)
 
